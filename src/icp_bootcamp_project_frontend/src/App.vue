@@ -14,14 +14,16 @@ async function handleSubmit(e) {
 </script>
 
 <template>
-  <main>
-    <img src="/logo2.svg" alt="DFINITY logo" />
+  <main class="bg-teal-900">
+    <div class="bg-teal-950">
+      <img src="/logo2.svg" alt="DFINITY logo" />
+    </div>
     <br />
     <br />
     <form action="#" @submit="handleSubmit">
       <label for="name">Enter your name: &nbsp;</label>
-      <input id="name" alt="Name" type="text" />
-      <button type="submit">Click Me!</button>
+      <input id="name" alt="Name" type="text" class="border-2 border-blue-600 p-4"/>
+      <button type="submit" class="bg-blue-600 rounded text-white p-4">Click Me!</button>
     </form>
     <section id="greeting">{{ greeting }}</section>
   </main>
