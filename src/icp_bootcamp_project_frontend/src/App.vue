@@ -1,25 +1,76 @@
-<script setup>
+<script>
 import { ref } from 'vue';
 import { icp_bootcamp_project_backend } from 'declarations/icp_bootcamp_project_backend/index';
-let greeting = ref('');
-const mask =ref(1); //for starting quiz
-const question_num = ref(1);
 
-function start(){
-  mask.value --;
-}
-function next_question(){
-  question_num.value ++;
-}
-async function handleSubmit(e) {
-  e.preventDefault();
-  const target = e.target;
-  const name = target.querySelector('#name').value;
-  await icp_bootcamp_project_backend.greet(name).then((response) => {
-    greeting.value = response;
-  });
-}
+export default {
+  data() {
+    return {
+      greeting: ref(''),
+      mask: ref(1),
+      question_num: ref(0),
+      equation: ref(''),
+      answer: ref(null)
+    }
+  },
+  methods: {
+    start() {
+      this.mask--;
+      this.next_question();
+    },
+    isPrime(num) {
+      if (num <= 1) return false;
+      for (let i = 2; i < num; i++) {
+        if (num % i === 0) return false;
+      }
+      return true;
+    },
+    getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    },
+    next_question() {
+      const operation = this.getRandomInt(1, 4);
+      let x, y, operation_symbol;
+      this.question_num++;
+      if (operation === 1) {
+        x = this.getRandomInt(1, 256);
+        y = this.getRandomInt(0, 256);
+        this.answer = x + y;
+        operation_symbol = '+';
+      } else if (operation === 2) {
+        x = this.getRandomInt(1, 256);
+        y = this.getRandomInt(0, 256);
+        this.answer = x - y;
+        operation_symbol = '-';
+      } else if (operation === 3) {
+        x = this.getRandomInt(1, 16);
+        y = this.getRandomInt(0, 16);
+        this.answer = x * y;
+        operation_symbol = '*';
+      } else {
+        x = this.getRandomInt(12, 150);
+        while (this.isPrime(x)) {
+          x = this.getRandomInt(12, 150);
+        }
+        y = this.getRandomInt(2, 12);
+        while (x % y !== 0) {
+          y = this.getRandomInt(2, 12);
+        }
+        this.answer = x / y;
+        operation_symbol = '/';
+      }
 
+      this.equation = `${x} ${operation_symbol} ${y}`;
+    },
+    async handleSubmit(e) {
+      e.preventDefault();
+      const target = e.target;
+      const name = target.querySelector('#name').value;
+      await icp_bootcamp_project_backend.greet(name).then((response) => {
+        this.greeting = response;
+      });
+    }
+  }
+}
 </script>
 
 <template>
@@ -53,7 +104,7 @@ async function handleSubmit(e) {
         <br />
         <br />
         <div class="text-center">
-              Equation
+              {{ equation }}
         </div>
         <br />
         <br />
