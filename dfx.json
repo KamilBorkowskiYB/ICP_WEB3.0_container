@@ -1,0 +1,27 @@
+{
+  "canisters": {
+    "icp_bootcamp_project_backend": {
+      "candid": "src/icp_bootcamp_project_backend/icp_bootcamp_project_backend.did",
+      "package": "icp_bootcamp_project_backend",
+      "type": "rust"
+    },
+    "icp_bootcamp_project_frontend": {
+      "dependencies": [
+        "icp_bootcamp_project_backend"
+      ],
+      "source": [
+        "src/icp_bootcamp_project_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "icp_bootcamp_project_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
