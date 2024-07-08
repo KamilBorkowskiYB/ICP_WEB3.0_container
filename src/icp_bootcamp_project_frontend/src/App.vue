@@ -5,16 +5,28 @@ import { icp_bootcamp_project_backend } from 'declarations/icp_bootcamp_project_
 export default {
   data() {
     return {
-      greeting: ref(''),
-      mask: ref(1),
+      mask: ref(1), // 0 = game , 1 = start, 2 = end
       question_num: ref(0),
       equation: ref(''),
-      answer: ref(null)
+      answer: ref(null),
+      score: ref(0),
+      submit_ans: ref(null)
     }
   },
   methods: {
     start() {
-      this.mask--;
+      this.mask = 0;
+      this.next_question();
+    },
+    handleSubmit(e) {
+      e.preventDefault();
+      const target = e.target;
+      this.submit_ans = target.querySelector('#ans').value;
+
+      if(this.submit_ans == this.answer){
+        this.score++;
+      }
+
       this.next_question();
     },
     isPrime(num) {
@@ -61,14 +73,6 @@ export default {
 
       this.equation = `${x} ${operation_symbol} ${y}`;
     },
-    async handleSubmit(e) {
-      e.preventDefault();
-      const target = e.target;
-      const name = target.querySelector('#name').value;
-      await icp_bootcamp_project_backend.greet(name).then((response) => {
-        this.greeting = response;
-      });
-    }
   }
 }
 </script>
@@ -81,6 +85,7 @@ export default {
     <div class="grid grid-cols-3"> <!-- Main screen -->
       <div class="bg-teal-700"> <!-- Left side -->
             nwm, moze jakis opis
+            Score: {{score}}
       </div>
 
       <div v-if="mask > 0" class="bg-teal-800"> <!-- Start menu -->
@@ -108,14 +113,14 @@ export default {
         </div>
         <br />
         <br />
+
         <form action="#" @submit="handleSubmit" class="flex flex-col items-stretch">
           <div class="text-center">
               Enter your answer
           </div>
-          <input id="name" alt="Name" type="text" class="border-2 border-blue-600 p-4 mx-20 text-center"/>
-          <button @click="next_question" type="submit" class="bg-blue-600 rounded text-white p-4">Answer</button>
+          <input id="ans" type="text" class="border-2 border-blue-600 p-4 mx-20 text-center"/>
+          <button type="submit" class="bg-blue-600 rounded text-white p-4">Answer</button>
         </form>
-        <section id="greeting">{{ greeting }}</section>
       </div>
 
       <div class="bg-teal-700">   <!-- Right side -->
