@@ -10,24 +10,44 @@ export default {
       equation: ref(''),
       answer: ref(null),
       score: ref(0),
-      submit_ans: ref(null)
+      submit_ans: ref(null),
+      time: ref(60),
+      timer: null
     }
   },
   methods: {
     start() {
+      this.time = 60;
+      this.question_num = 0;
+      this.score = 0;
       this.mask = 0;
       this.next_question();
+
+      this.$nextTick(() => {
+        this.$refs.ans.focus();
+      });
+      this.timer = setInterval(this.countDown, 1000);
     },
     handleSubmit(e) {
       e.preventDefault();
       const target = e.target;
       this.submit_ans = target.querySelector('#ans').value;
+      target.querySelector('#ans').value = '';
 
       if(this.submit_ans == this.answer){
         this.score++;
+        this.time += 2;
       }
 
       this.next_question();
+    },
+    countDown(){
+      if (this.time > 0) {
+        this.time--;
+      } else {
+        clearInterval(this.timer);
+        this.mask = 1;
+      }
     },
     isPrime(num) {
       if (num <= 1) return false;
@@ -85,7 +105,10 @@ export default {
     <div class="grid grid-cols-3"> <!-- Main screen -->
       <div class="bg-teal-700"> <!-- Left side -->
             nwm, moze jakis opis
+            <br />
             Score: {{score}}
+            <br />
+            Time left: {{ time }}
       </div>
 
       <div v-if="mask > 0" class="bg-teal-800"> <!-- Start menu -->
@@ -118,7 +141,7 @@ export default {
           <div class="text-center">
               Enter your answer
           </div>
-          <input id="ans" type="text" class="border-2 border-blue-600 p-4 mx-20 text-center"/>
+          <input id="ans" ref="ans" autocomplete="off" type="text" class="border-2 border-blue-600 p-4 mx-20 text-center"/>
           <button type="submit" class="bg-blue-600 rounded text-white p-4">Answer</button>
         </form>
       </div>
