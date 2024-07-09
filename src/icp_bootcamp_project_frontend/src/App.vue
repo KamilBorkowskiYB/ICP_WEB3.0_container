@@ -128,6 +128,16 @@ export default {
             <p>Time left: {{ time }} </p>         
           </div>
         </div>
+        <div v-if="mask == 2" class="flex items-center justify-center grow"><!-- Left side end screen -->
+          <div class="text-center text-4xl">
+            <p>Highscore: {{ highscore }}</p>
+            <p class="py-10">Score: {{score}}</p>
+            <p>Questions asked: {{ question_num }} </p>  
+            <p class="py-10">Correct answers: {{ score }}</p>  
+            <p>Wrong answers: {{ question_num - score }}</p>
+            <p class="pt-10">Time: </p>
+          </div>
+        </div>
 
       </div>
       <div class="bg-slate-700 h-full drop-shadow-2xl"><!-- Middle -->
