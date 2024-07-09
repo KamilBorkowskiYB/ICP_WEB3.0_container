@@ -12,7 +12,8 @@ export default {
       score: ref(0),
       submit_ans: ref(null),
       time: ref(60),
-      timer: null
+      timer: null,
+      highscore: ref(0)
     }
   },
   methods: {
@@ -42,7 +43,7 @@ export default {
       this.next_question();
     },
     countDown(){
-      if (this.time > 0) {
+      if (this.time > 1) {
         this.time--;
       } else {
         clearInterval(this.timer);
@@ -98,57 +99,70 @@ export default {
 </script>
 
 <template>
-  <main class="bg-teal-800">
-    <div class="bg-teal-900">   <!-- Top bar -->
+  <main class="bg-slate-700 h-screen text-white">
+    <div class="bg-slate-800 h-1/6">   <!-- Top bar -->
       <img src="/logo2.svg" alt="DFINITY logo" />
     </div>
-    <div class="grid grid-cols-3"> <!-- Main screen -->
-      <div class="bg-teal-700"> <!-- Left side -->
-            nwm, moze jakis opis
-            <br />
-            Score: {{score}}
-            <br />
-            Time left: {{ time }}
-      </div>
-
-      <div v-if="mask > 0" class="bg-teal-800"> <!-- Start menu -->
-        <br />
-        <br />
-        <br />
-        <br />
-        <div class="flex justify-center">
-          <button @click="start" class="bg-blue-600 rounded text-white p-20">Start</button>
-        </div>
-        <br />
-        <br />
-        <br />
-        <br />
-      </div>
-      <div v-if="mask <= 0" class="bg-teal-800">   <!-- Middle -->
-        <br />
-        <div class="text-center text-3xl">
-              Question {{ question_num }}
-        </div>
-        <br />
-        <br />
-        <div class="text-center">
-              {{ equation }}
-        </div>
-        <br />
-        <br />
-
-        <form action="#" @submit="handleSubmit" class="flex flex-col items-stretch">
-          <div class="text-center">
-              Enter your answer
+    <div class="grid grid-cols-3 h-4/6"> <!-- Main screen -->
+      <div class="bg-slate-600 flex"> <!-- Left side -->
+        <div v-if="mask == 1" ><!-- Left side start -->
+          <br>
+          <br>
+          <h1 class="text-center text-4xl">How to play</h1>
+          <br>
+          <div class="text-center px-20 pb-20">
+            <p>You will have one minute to answer as many math questions as you can.</p>
+            <p class="py-4">Each good answer awards you one score point and bonus two seconds.</p>
+            <p>But each wrong answer will cost you two seconds.</p>
+            <br>
+            <p>Click Start when ready!</p>
           </div>
-          <input id="ans" ref="ans" autocomplete="off" type="text" class="border-2 border-blue-600 p-4 mx-20 text-center"/>
-          <button type="submit" class="bg-blue-600 rounded text-white p-4">Answer</button>
-        </form>
-      </div>
+        </div>
+        <div v-if="mask == 0" class="flex items-center justify-center grow"><!-- Left side game -->
+          <div class="text-center text-4xl">
+            <p>Highscore: {{ highscore }}</p>
+            <p class="py-20">Score: {{score}}</p>
+            <p>Time left: {{ time }} </p>         
+          </div>
+        </div>
 
-      <div class="bg-teal-700">   <!-- Right side -->
+      </div>
+      <div class="bg-slate-700 h-full drop-shadow-2xl"><!-- Middle -->
+        <div v-if="mask == 1" class="h-full flex justify-center items-center" > <!-- Start menu -->
+          <div class="flex justify-center">
+            <button @click="start" class="bg-orange-600 rounded text-white p-20">Start</button>
+          </div>
+        </div>
+        <div v-if="mask == 0" class="h-full">   <!-- Game -->
+          <br />
+          <div class="text-center text-4xl">
+             Question {{ question_num }}
+          </div>
+          <br />
+          <br />
+          <br />
+          <div class="text-center text-7xl">
+                {{ equation }}
+          </div>
+          <br />
+          <br />
+          <form action="#" @submit="handleSubmit" class="flex flex-col items-stretch">
+            <div class="text-center text-lg">
+                Enter your answer
+            </div>
+            <input id="ans" ref="ans" autocomplete="off" type="text" class="border-2 border-orange-600 p-4 mx-20 text-center text-black"/>
+            <button type="submit" class="bg-orange-600 rounded text-white p-4">Answer</button>
+          </form>
+        </div>
+      </div>
+      
+
+      <div class="bg-slate-600">   <!-- Right side -->
             leaderboard
       </div>
     </div>
+    <div class="bg-slate-800 h-1/6">   <!-- Bottom -->
+            github
+      </div>
   </main>
 </template>
