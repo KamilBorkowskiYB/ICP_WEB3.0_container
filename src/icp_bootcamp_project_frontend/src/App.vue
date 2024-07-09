@@ -11,14 +11,14 @@ export default {
       answer: ref(null),
       score: ref(0),
       submit_ans: ref(null),
-      time: ref(60),
+      time: ref(10),
       timer: null,
       highscore: ref(0)
     }
   },
   methods: {
     start() {
-      this.time = 60;
+      this.time = 10;//60 normaly , 10 for end screen debug
       this.question_num = 0;
       this.score = 0;
       this.mask = 0;
@@ -47,7 +47,7 @@ export default {
         this.time--;
       } else {
         clearInterval(this.timer);
-        this.mask = 1;
+        this.mask = 2;
       }
     },
     isPrime(num) {
@@ -93,6 +93,9 @@ export default {
       }
 
       this.equation = `${x} ${operation_symbol} ${y}`;
+    },
+    send_score(e){
+      e.preventDefault();
     },
   }
 }
@@ -151,7 +154,23 @@ export default {
                 Enter your answer
             </div>
             <input id="ans" ref="ans" autocomplete="off" type="text" class="border-2 border-orange-600 p-4 mx-20 text-center text-black"/>
-            <button type="submit" class="bg-orange-600 rounded text-white p-4">Answer</button>
+            <button type="submit" class="bg-orange-600 rounded text-white p-4 mx-20 mt-4">Answer</button>
+          </form>
+        </div>
+        <div v-if="mask == 2" class="h-full"> <!-- End screen -->
+          <br />
+          <p class="text-center text-4xl">Time's up!</p>
+          <br />
+          <br />
+          <p class="text-center text-4xl">Share your score on the leaderboard.</p>
+          <br />
+          <form action="#" @submit="send_score" class="flex flex-col items-stretch">
+            <div class="text-center text-lg">
+                Enter your name
+            </div>
+            <input id="name" ref="name" autocomplete="off" type="text" class="border-2 border-orange-600 p-4 mx-20 text-center text-black"/>
+            <button type="submit" class="bg-orange-600 rounded text-white p-4 mx-20">Send</button>
+            <button @click="start" class="bg-orange-600 rounded text-white p-4 mx-20">Restart</button>
           </form>
         </div>
       </div>
