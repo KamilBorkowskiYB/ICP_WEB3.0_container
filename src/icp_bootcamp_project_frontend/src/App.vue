@@ -13,12 +13,16 @@ export default {
       submit_ans: ref(null),
       time: ref(10),
       timer: null,
-      highscore: ref(0)
+      highscore: ref(0),
+      game_time: ref(0),
+      game_timer: null,
+      time_spent: ref('')
     }
   },
   methods: {
     start() {
-      this.time = 10;//60 normaly , 10 for end screen debug
+      this.time = 60;//60 normaly , 10 for end screen debug
+      this.game_time = 0;
       this.question_num = 0;
       this.score = 0;
       this.mask = 0;
@@ -28,6 +32,7 @@ export default {
         this.$refs.ans.focus();
       });
       this.timer = setInterval(this.countDown, 1000);
+      this.game_timer = setInterval(this.countUp, 1000);
     },
     handleSubmit(e) {
       e.preventDefault();
@@ -48,7 +53,19 @@ export default {
       } else {
         clearInterval(this.timer);
         this.mask = 2;
+        if(this.score > this.highscore){
+          this.highscore = this.score;
+        }
       }
+    },
+    countUp(){
+      this.game_time++;
+      if(this.mask == 2){
+        clearInterval(this.game_timer);
+        const minutes = Math.floor(this.game_time / 60);
+        const seconds = this.game_time % 60;
+        this.time_spent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+      } 
     },
     isPrime(num) {
       if (num <= 1) return false;
@@ -135,7 +152,7 @@ export default {
             <p>Questions asked: {{ question_num }} </p>  
             <p class="py-10">Correct answers: {{ score }}</p>  
             <p>Wrong answers: {{ question_num - score }}</p>
-            <p class="pt-10">Time: </p>
+            <p class="pt-10">Time {{ time_spent }}</p>
           </div>
         </div>
 
