@@ -120,8 +120,11 @@ export default {
 
 <template>
   <main class="bg-slate-700 h-screen text-white">
-    <div class="bg-slate-800 h-1/6">   <!-- Top bar -->
-      <img src="/logo2.svg" alt="DFINITY logo" />
+    <div class="bg-slate-800 h-20 flex items-center">   <!-- Top bar -->
+      <div class="pl-10">
+        <p class="text-4xl text-orange-600">Math Quiz Blitz</p>
+        <p class="text-xs pl-4">by Kamil Borkowski and Krzysztof Chrapowicz</p>     
+      </div>
     </div>
     <div class="grid grid-cols-3 h-4/6"> <!-- Main screen -->
       <div class="bg-slate-600 flex"> <!-- Left side -->
@@ -208,7 +211,13 @@ export default {
       </div>
     </div>
     <div class="bg-slate-800 h-1/6">   <!-- Bottom -->
-            github
+      <div>
+        project git repo
+        <a href="https://github.com/KamilBorkowskiYB/ICP_WEB3.0_container"></a>
+        authors repos
+        <a href="https://github.com/KamilBorkowskiYB"></a>
+        <a href="https://github.com/Gemmon">https://github.com/Gemmon</a>
       </div>
+    </div>
   </main>
 </template>
