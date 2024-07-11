@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { icp_bootcamp_project_backend } from 'declarations/icp_bootcamp_project_backend/index';
 
+
 export default {
   data() {
     return {
@@ -43,6 +44,11 @@ export default {
       if(this.submit_ans == this.answer){
         this.score++;
         this.time += 2;
+        let audio = new Audio("correct.mp3");
+        audio.play();
+      } else{
+        let audio = new Audio("wrong.mp3");
+        audio.play();
       }
 
       this.next_question();
@@ -114,6 +120,13 @@ export default {
     send_score(e){
       e.preventDefault();
     },
+    toggleAudio(){
+
+    },
+  },
+  mounted(){
+    const audio_button = document.getElementById("audio_button");
+    audio_button.innerHTML = '<img src="/audio_btn.png" width="50" height="50" />';
   }
 }
 </script>
@@ -125,6 +138,7 @@ export default {
         <p class="text-4xl text-orange-600">Math Quiz Blitz</p>
         <p class="text-xs pl-4">by Kamil Borkowski and Krzysztof Chrapowicz</p>     
       </div>
+      <button @click="toggleAudio" id="audio_button"></button>
     </div>
 
     <div class="bg-slate-600 h-16"></div> <!-- Top span panel -->
