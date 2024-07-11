@@ -17,7 +17,8 @@ export default {
       highscore: ref(0),
       game_time: ref(0),
       game_timer: null,
-      time_spent: ref('')
+      time_spent: ref(''),
+      soundON: ref(1),
     }
   },
   methods: {
@@ -44,11 +45,15 @@ export default {
       if(this.submit_ans == this.answer){
         this.score++;
         this.time += 2;
+        if(this.soundON == 1){
         let audio = new Audio("correct.mp3");
-        audio.play();
+        audio.play();          
+        }
       } else{
+        if(this.soundON == 1){
         let audio = new Audio("wrong.mp3");
-        audio.play();
+        audio.play();          
+        }
       }
 
       this.next_question();
@@ -121,12 +126,20 @@ export default {
       e.preventDefault();
     },
     toggleAudio(){
-
+      if(this.soundON == 1){
+        this.soundON = 0;
+        const audio_button = document.getElementById("audio_button");
+        audio_button.innerHTML = '<img src="/audioOFF_btn.jpg" width="50" height="50" />';
+      } else{
+        this.soundON = 1;
+        const audio_button = document.getElementById("audio_button");
+        audio_button.innerHTML = '<img src="/audioON_btn.jpg" width="50" height="50" />';
+      }
     },
   },
   mounted(){
     const audio_button = document.getElementById("audio_button");
-    audio_button.innerHTML = '<img src="/audio_btn.png" width="50" height="50" />';
+    audio_button.innerHTML = '<img src="/audioON_btn.jpg" width="50" height="50" />';
   }
 }
 </script>
@@ -138,7 +151,7 @@ export default {
         <p class="text-4xl text-orange-600">Math Quiz Blitz</p>
         <p class="text-xs pl-4">by Kamil Borkowski and Krzysztof Chrapowicz</p>     
       </div>
-      <button @click="toggleAudio" id="audio_button"></button>
+      <button @click="toggleAudio" id="audio_button" class="ml-auto pr-10"></button>
     </div>
 
     <div class="bg-slate-600 h-16"></div> <!-- Top span panel -->
