@@ -119,13 +119,16 @@ export default {
 </script>
 
 <template>
-  <main class="bg-slate-700 h-screen text-white">
+  <main class="bg-slate-800 h-screen text-white">
     <div class="bg-slate-800 h-20 flex items-center">   <!-- Top bar -->
       <div class="pl-10">
         <p class="text-4xl text-orange-600">Math Quiz Blitz</p>
         <p class="text-xs pl-4">by Kamil Borkowski and Krzysztof Chrapowicz</p>     
       </div>
     </div>
+
+    <div class="bg-slate-600 h-16"></div> <!-- Top span panel -->
+
     <div class="grid grid-cols-3 h-4/6"> <!-- Main screen -->
       <div class="bg-slate-600 flex"> <!-- Left side -->
         <div v-if="mask == 1" ><!-- Left side start -->
@@ -158,12 +161,12 @@ export default {
             <p class="pt-10">Time {{ time_spent }}</p>
           </div>
         </div>
-
       </div>
+
       <div class="bg-slate-700 h-full drop-shadow-2xl"><!-- Middle -->
         <div v-if="mask == 1" class="h-full flex justify-center items-center" > <!-- Start menu -->
           <div class="flex justify-center">
-            <button @click="start" class="bg-orange-600 rounded text-white p-20">Start</button>
+            <button @click="start" class="bg-orange-600 rounded text-white p-20 text-5xl">Start</button>
           </div>
         </div>
         <div v-if="mask == 0" class="h-full">   <!-- Game -->
@@ -205,18 +208,26 @@ export default {
         </div>
       </div>
       
-
       <div class="bg-slate-600">   <!-- Right side -->
             leaderboard
       </div>
     </div>
-    <div class="bg-slate-800 h-1/6">   <!-- Bottom -->
-      <div>
-        project git repo
-        <a href="https://github.com/KamilBorkowskiYB/ICP_WEB3.0_container"></a>
-        authors repos
-        <a href="https://github.com/KamilBorkowskiYB"></a>
-        <a href="https://github.com/Gemmon">https://github.com/Gemmon</a>
+
+    <div class="bg-slate-600 h-16"></div> <!-- Bottom span panel -->
+
+    <div class="bg-slate-800 h-20 flex items-center">   <!-- Bottom -->
+      <div class="text-sm text-gray-400 pl-10 grid grid-cols-2 gap-10">
+        <div>
+          <p class="text-base">Project repository</p>
+          <a href="https://github.com/KamilBorkowskiYB/ICP_WEB3.0_container">https://github.com/KamilBorkowskiYB/ICP_WEB3.0_container</a>
+          <br>
+        </div>
+        <div>
+          <p class="text-base">Authors' repositories</p>
+          <a href="https://github.com/KamilBorkowskiYB">https://github.com/KamilBorkowskiYB</a>
+          <br>
+          <a href="https://github.com/Gemmon">https://github.com/Gemmon</a>
+        </div>
       </div>
     </div>
   </main>
