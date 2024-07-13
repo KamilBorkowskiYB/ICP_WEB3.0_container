@@ -1,3 +1,4 @@
 service : {
-    "greet": (text) -> (text) query;
+    add_record: (text, nat64) -> ();
+    read_leaderboard: () -> (vec text, vec nat64) query;
 }
