@@ -19,10 +19,19 @@ export default {
       game_timer: null,
       time_spent: ref(''),
       soundON: ref(1),
+      flashRed: ref(false),
     }
   },
+
+
   methods: {
+    restart(){
+      this.mask = 1;
+
+    },
     start() {
+      clearInterval(this.timer); // Clear any existing timer
+      clearInterval(this.game_timer); // Clear any existing game timer
       this.time = 60;//60 normaly , 10 for end screen debug
       this.game_time = 0;
       this.question_num = 0;
@@ -50,6 +59,11 @@ export default {
         audio.play();          
         }
       } else{
+        this.time -= 2;
+        this.flashRed = true;
+        setTimeout(() => {
+          this.flashRed = false;
+        }, 1000);
         if(this.soundON == 1){
         let audio = new Audio("wrong.mp3");
         audio.play();          
@@ -156,6 +170,7 @@ export default {
 
     <div class="bg-slate-600 h-16"></div> <!-- Top span panel -->
 
+
     <div class="grid grid-cols-3 h-4/6"> <!-- Main screen -->
       <div class="bg-slate-600 flex"> <!-- Left side -->
         <div v-if="mask == 1" ><!-- Left side start -->
@@ -190,33 +205,33 @@ export default {
         </div>
       </div>
 
-      <div class="bg-slate-700 h-full drop-shadow-2xl"><!-- Middle -->
+      <div :class="{'bg-red-500': flashRed, 'bg-slate-700': !flashRed}" class="h-full drop-shadow-2xl"><!-- Middle -->
         <div v-if="mask == 1" class="h-full flex justify-center items-center" > <!-- Start menu -->
           <div class="flex justify-center">
-            <button @click="start" class="bg-orange-600 rounded text-white p-20 text-5xl">Start</button>
+            <button @click="start" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-20 text-5xl">Start</button>
           </div>
         </div>
         <div v-if="mask == 0" class="h-full">   <!-- Game -->
           <br />
           <div class="text-center text-4xl">
-             Question {{ question_num }}
+            Question {{ question_num }}
           </div>
-          <br />
           <br />
           <br />
           <div class="text-center text-7xl">
                 {{ equation }}
           </div>
           <br />
-          <br />
-          <form action="#" @submit="handleSubmit" class="flex flex-col items-stretch">
+          <form action="#" @submit="handleSubmit" class="flex flex-col items-stretch place-content-evenly">
             <div class="text-center text-lg">
                 Enter your answer
             </div>
             <input id="ans" ref="ans" autocomplete="off" type="text" class="border-2 border-orange-600 p-4 mx-20 text-center text-black"/>
-            <button type="submit" class="bg-orange-600 rounded text-white p-4 mx-20 mt-4">Answer</button>
+            <button type="submit" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-20">Answer</button>
+            <button @click="restart" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-20 ">Restart</button>
           </form>
         </div>
+
         <div v-if="mask == 2" class="h-full"> <!-- End screen -->
           <br />
           <p class="text-center text-4xl">Time's up!</p>
@@ -224,19 +239,23 @@ export default {
           <br />
           <p class="text-center text-4xl">Share your score on the leaderboard.</p>
           <br />
-          <form action="#" @submit="send_score" class="flex flex-col items-stretch">
+          <form action="#" @submit="send_score" class="flex flex-col items-stretch place-content-evenly">
             <div class="text-center text-lg">
                 Enter your name
             </div>
             <input id="name" ref="name" autocomplete="off" type="text" class="border-2 border-orange-600 p-4 mx-20 text-center text-black"/>
-            <button type="submit" class="bg-orange-600 rounded text-white p-4 mx-20">Send</button>
-            <button @click="start" class="bg-orange-600 rounded text-white p-4 mx-20">Restart</button>
+            <button type="submit" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-20">Send</button>
+            <button @click="start" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-20">Restart</button>
           </form>
         </div>
       </div>
       
-      <div class="bg-slate-600">   <!-- Right side -->
-            leaderboard
+      <div class="bg-slate-600"><!-- Right side -->
+      <div class="bg-violet-600 rounded p-4 mx-20 h-full">
+        <div class="rounded-lg text-5xl flex justify-center font-semibold text-red-500">   
+              LEADERBOARD
+        </div>
+      </div>        
       </div>
     </div>
 
