@@ -20,14 +20,16 @@ export default {
       time_spent: ref(''),
       soundON: ref(1),
       flashRed: ref(false),
+      btn_disable: ref(false),
     }
   },
 
 
   methods: {
     restart(){
+      clearInterval(this.timer);
+      clearInterval(this.game_timer); 
       this.mask = 1;
-
     },
     start() {
       clearInterval(this.timer); // Clear any existing timer
@@ -54,23 +56,29 @@ export default {
       if(this.submit_ans == this.answer){
         this.score++;
         this.time += 2;
+
         if(this.soundON == 1){
         let audio = new Audio("correct.mp3");
-        audio.play();          
+        audio.play();  
+        this.next_question();
         }
       } else{
-        this.time -= 2;
         this.flashRed = true;
-        setTimeout(() => {
-          this.flashRed = false;
-        }, 1000);
+        this.btn_disable = true;
+        this.equation = `Correct: ${this.answer}`;
+
+
         if(this.soundON == 1){
         let audio = new Audio("wrong.mp3");
-        audio.play();          
+        audio.play(); 
         }
-      }
 
-      this.next_question();
+        setTimeout(() => {
+          this.flashRed = false;
+          this.btn_disable = false;
+          this.next_question();
+        }, 2000);        
+      }
     },
     countDown(){
       if (this.time > 1) {
@@ -227,8 +235,8 @@ export default {
                 Enter your answer
             </div>
             <input id="ans" ref="ans" autocomplete="off" type="text" class="border-2 border-orange-600 p-4 mx-20 text-center text-black"/>
-            <button type="submit" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-20">Answer</button>
-            <button @click="restart" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-20 ">Restart</button>
+            <button :disabled="btn_disable" type="submit" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-20">Answer</button>
+            <button :disabled="btn_disable" @click="restart" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-20 ">Restart</button>
           </form>
         </div>
 
