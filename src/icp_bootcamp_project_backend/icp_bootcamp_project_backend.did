@@ -1,4 +1,6 @@
 service : {
-    add_record: (text, nat64) -> ();
-    read_leaderboard: () -> (vec text, vec nat64) query;
+    add_record: (text, text) -> ();
+    read_leaderboard: () -> (vec vec text) query;
+    clear_leaderboard: () -> ();
+    sort_leaderboard: () -> ();
 }

@@ -21,6 +21,7 @@ export default {
       soundON: ref(1),
       flashRed: ref(false),
       btn_disable: ref(false),
+      send_btn_disable: ref(false),
     }
   },
 
@@ -34,11 +35,12 @@ export default {
     start() {
       clearInterval(this.timer); // Clear any existing timer
       clearInterval(this.game_timer); // Clear any existing game timer
-      this.time = 60;//60 normaly , 10 for end screen debug
+      this.time = 5;//60 normaly , 10 for end screen debug
       this.game_time = 0;
       this.question_num = 0;
       this.score = 0;
       this.mask = 0;
+      this.btn_disable = false;
       this.next_question();
 
       this.$nextTick(() => {
@@ -144,8 +146,12 @@ export default {
 
       this.equation = `${x} ${operation_symbol} ${y}`;
     },
-    send_score(e){
+    async send_score(e){
       e.preventDefault();
+      this.btn_disable = true;
+      const target = e.target;
+      const name = target.querySelector('#name').value;
+      await icp_bootcamp_project_backend.add_record(name,this.score.toString());
     },
     toggleAudio(){
       if(this.soundON == 1){
@@ -252,7 +258,7 @@ export default {
                 Enter your name
             </div>
             <input id="name" ref="name" autocomplete="off" type="text" class="border-2 border-orange-600 p-4 mx-20 text-center text-black"/>
-            <button type="submit" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-20">Send</button>
+            <button :disabled="btn_disable" type="submit" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-20">Send</button>
             <button @click="start" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-20">Restart</button>
           </form>
         </div>
