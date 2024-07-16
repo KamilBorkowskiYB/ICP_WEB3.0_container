@@ -22,6 +22,7 @@ export default {
       flashRed: ref(false),
       btn_disable: ref(false),
       send_btn_disable: ref(false),
+      leaderboard: [],
     }
   },
 
@@ -31,17 +32,19 @@ export default {
       clearInterval(this.timer);
       clearInterval(this.game_timer); 
       this.mask = 1;
+      this.load_leaderboard();
     },
     start() {
       clearInterval(this.timer); // Clear any existing timer
       clearInterval(this.game_timer); // Clear any existing game timer
-      this.time = 5;//60 normaly , 10 for end screen debug
+      this.time = 60;//60 normaly , 10 for end screen debug
       this.game_time = 0;
       this.question_num = 0;
       this.score = 0;
       this.mask = 0;
       this.btn_disable = false;
       this.next_question();
+      this.load_leaderboard();
 
       this.$nextTick(() => {
         this.$refs.ans.focus();
@@ -151,7 +154,15 @@ export default {
       this.btn_disable = true;
       const target = e.target;
       const name = target.querySelector('#name').value;
-      await icp_bootcamp_project_backend.add_record(name,this.score.toString());
+      if(name.length <= 15){
+        await icp_bootcamp_project_backend.add_record(name,this.score.toString());
+        this.load_leaderboard();        
+      }else{
+        this.btn_disable = false;
+      }
+    },
+    async load_leaderboard(){
+      this.leaderboard = await icp_bootcamp_project_backend.read_leaderboard();
     },
     toggleAudio(){
       if(this.soundON == 1){
@@ -168,6 +179,12 @@ export default {
   mounted(){
     const audio_button = document.getElementById("audio_button");
     audio_button.innerHTML = '<img src="/audioON_btn.jpg" width="50" height="50" />';
+    this.load_leaderboard();
+  },
+  computed: {
+    limitedLeaderboard() {
+      return this.leaderboard.slice(0, 8);
+    }
   }
 }
 </script>
@@ -255,7 +272,7 @@ export default {
           <br />
           <form action="#" @submit="send_score" class="flex flex-col items-stretch place-content-evenly">
             <div class="text-center text-lg">
-                Enter your name
+                Enter your name (max 15 characters)
             </div>
             <input id="name" ref="name" autocomplete="off" type="text" class="border-2 border-orange-600 p-4 mx-20 text-center text-black"/>
             <button :disabled="btn_disable" type="submit" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-20">Send</button>
@@ -265,11 +282,19 @@ export default {
       </div>
       
       <div class="bg-slate-600"><!-- Right side -->
-      <div class="bg-violet-600 rounded p-4 mx-20 h-full">
-        <div class="rounded-lg text-5xl flex justify-center font-semibold text-red-500">   
-              LEADERBOARD
-        </div>
-      </div>        
+        <div class="bg-slate-700 rounded p-4 mx-20 h-full">
+          <div class="rounded-lg grid mx-6 gap-4">   
+              <p class="text-5xl text-center">LEADERBOARD</p>
+              <div class="flex justify-between text-gray-400">
+                <p>Player name</p>
+                <p>Score</p>
+              </div>
+              <div v-for="record in limitedLeaderboard" :key="record[0]" class="flex justify-between">
+                <p>{{ record[0] }}</p>
+                <p>{{ record[1] }}</p>
+              </div>
+          </div>
+        </div>        
       </div>
     </div>
 

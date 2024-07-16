@@ -13,6 +13,7 @@ fn add_record(name: String, score: String){
 
 #[ic_cdk::query]
 fn read_leaderboard() -> Vec<Vec<String>> {
+    sort_leaderboard();
     LEADERBOARD.with(|records|{
         records.borrow().clone()
     })
