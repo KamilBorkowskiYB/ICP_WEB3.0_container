@@ -20,6 +20,7 @@ export default {
       time_spent: ref(''),
       soundON: ref(1),
       flashRed: ref(false),
+      flashGreen: ref(false),
       btn_disable: ref(false),
       send_btn_disable: ref(false),
       leaderboard: [],
@@ -61,11 +62,17 @@ export default {
       if(this.submit_ans == this.answer){
         this.score++;
         this.time += 2;
+        this.flashGreen = true;
+        this.btn_disable = true;
 
         if(this.soundON == 1){
         let audio = new Audio("correct.mp3");
         audio.play();  
-        this.next_question();
+        setTimeout(() => {
+          this.flashGreen = false;
+          this.btn_disable = false;
+          this.next_question();
+        }, 500);       
         }
       } else{
         this.flashRed = true;
@@ -77,12 +84,13 @@ export default {
         let audio = new Audio("wrong.mp3");
         audio.play(); 
         }
+        this.time -= 1;
 
         setTimeout(() => {
           this.flashRed = false;
           this.btn_disable = false;
           this.next_question();
-        }, 2000);        
+        }, 1000);        
       }
     },
     countDown(){
@@ -202,8 +210,8 @@ export default {
     <div class="bg-slate-600 h-16"></div> <!-- Top span panel -->
 
 
-    <div class="grid grid-cols-3 h-4/6"> <!-- Main screen -->
-      <div class="bg-slate-600 flex"> <!-- Left side -->
+    <div class="grid xl:grid-cols-3 lg:grid-cols-1"> <!-- Main screen -->
+      <div class="bg-slate-600 flex justify-center"> <!-- Left side -->
         <div v-if="mask == 1" ><!-- Left side start -->
           <br>
           <br>
@@ -218,38 +226,38 @@ export default {
           </div>
         </div>
         <div v-if="mask == 0" class="flex items-center justify-center grow"><!-- Left side game -->
-          <div class="text-center text-4xl">
+          <div class="text-center 2xl:text-4xl xl:text-3xl">
             <p>Highscore: {{ highscore }}</p>
-            <p class="py-20">Score: {{score}}</p>
-            <p>Time left: {{ time }} </p>         
+            <p class="pt-10">Score: {{score}}</p>
+            <p class="py-10">Time left: {{ time }} </p>         
           </div>
         </div>
         <div v-if="mask == 2" class="flex items-center justify-center grow"><!-- Left side end screen -->
-          <div class="text-center text-4xl">
+          <div class="text-center 2xl:text-4xl xl:text-3xl text-3xl">
             <p>Highscore: {{ highscore }}</p>
             <p class="py-10">Score: {{score}}</p>
             <p>Questions asked: {{ question_num }} </p>  
             <p class="py-10">Correct answers: {{ score }}</p>  
             <p>Wrong answers: {{ question_num - score }}</p>
-            <p class="pt-10">Time {{ time_spent }}</p>
+            <p class="py-10">Time {{ time_spent }}</p>
           </div>
         </div>
       </div>
 
-      <div :class="{'bg-red-500': flashRed, 'bg-slate-700': !flashRed}" class="h-full drop-shadow-2xl"><!-- Middle -->
+      <div :class="{'bg-red-500': flashRed, 'bg-green-500': flashGreen, 'bg-slate-700': !flashRed && !flashGreen}" class="h-full drop-shadow-2xl py-10"><!-- Middle -->
         <div v-if="mask == 1" class="h-full flex justify-center items-center" > <!-- Start menu -->
           <div class="flex justify-center">
-            <button @click="start" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-20 text-5xl">Start</button>
+            <button @click="start" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-20 text-5xl xl:text 4xl">Start</button>
           </div>
         </div>
         <div v-if="mask == 0" class="h-full">   <!-- Game -->
           <br />
-          <div class="text-center text-4xl">
+          <div class="text-center 2xl:text-4xl text-3xl">
             Question {{ question_num }}
           </div>
           <br />
           <br />
-          <div class="text-center text-7xl">
+          <div class="text-center text-5xl 2xl:text-7xl">
                 {{ equation }}
           </div>
           <br />
@@ -258,8 +266,8 @@ export default {
                 Enter your answer
             </div>
             <input id="ans" ref="ans" autocomplete="off" type="text" class="border-2 border-orange-600 p-4 mx-20 text-center text-black"/>
-            <button :disabled="btn_disable" type="submit" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-20">Answer</button>
-            <button :disabled="btn_disable" @click="restart" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-20 ">Restart</button>
+            <button :disabled="btn_disable" type="submit" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-3 mx-20 xl:mx-15">Answer</button>
+            <button :disabled="btn_disable" @click="restart" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-20 xl:mx-15 ">Restart</button>
           </form>
         </div>
 
@@ -281,15 +289,15 @@ export default {
         </div>
       </div>
       
-      <div class="bg-slate-600"><!-- Right side -->
+      <div class="bg-slate-600 py-10"><!-- Right side -->
         <div class="bg-slate-700 rounded p-4 mx-20 h-full">
           <div class="rounded-lg grid mx-6 gap-4">   
-              <p class="text-5xl text-center">LEADERBOARD</p>
-              <div class="flex justify-between text-gray-400">
+              <p class="2xl:text-3xl xl:text-2xl text-center text-4xl">LEADERBOARD</p>
+              <div class="flex justify-between text-gray-400 2xl:text-2xl text-xl">
                 <p>Player name</p>
                 <p>Score</p>
               </div>
-              <div v-for="record in limitedLeaderboard" :key="record[0]" class="flex justify-between">
+              <div v-for="record in limitedLeaderboard" :key="record[0]" class="flex justify-between 2xl:text-2xl xl:text-xl text-2xl">
                 <p>{{ record[0] }}</p>
                 <p>{{ record[1] }}</p>
               </div>
@@ -300,20 +308,20 @@ export default {
 
     <div class="bg-slate-600 h-16"></div> <!-- Bottom span panel -->
 
-    <div class="bg-slate-800 h-20 flex items-center">   <!-- Bottom -->
-      <div class="text-sm text-gray-400 pl-10 grid grid-cols-2 gap-10">
-        <div>
-          <p class="text-base">Project repository</p>
-          <a href="https://github.com/KamilBorkowskiYB/ICP_WEB3.0_container">https://github.com/KamilBorkowskiYB/ICP_WEB3.0_container</a>
-          <br>
-        </div>
-        <div>
-          <p class="text-base">Authors' repositories</p>
-          <a href="https://github.com/KamilBorkowskiYB">https://github.com/KamilBorkowskiYB</a>
-          <br>
-          <a href="https://github.com/Gemmon">https://github.com/Gemmon</a>
-        </div>
-      </div>
+<div class="bg-slate-800 h-20 flex items-center">   <!-- Bottom -->
+  <div class="text-sm text-gray-400 pl-10 grid grid-cols-2 gap-10">
+    <div>
+      <p class="text-base">Project repository</p>
+      <a href="https://github.com/KamilBorkowskiYB/ICP_WEB3.0_container">https://github.com/KamilBorkowskiYB/ICP_WEB3.0_container</a>
+      <br>
     </div>
-  </main>
+    <div>
+      <p class="text-base">Authors' repositories</p>
+      <a href="https://github.com/KamilBorkowskiYB">https://github.com/KamilBorkowskiYB</a>
+      <br>
+      <a href="https://github.com/Gemmon">https://github.com/Gemmon</a>
+    </div>
+  </div>
+</div>
+</main>
 </template>
