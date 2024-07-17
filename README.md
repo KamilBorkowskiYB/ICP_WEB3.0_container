@@ -1,25 +1,12 @@
-# `icp_bootcamp_project`
+# `Math Quiz Blitz`
 
-Welcome to your new `icp_bootcamp_project` project and to the Internet Computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
+This project presents a WEB 3.0 website built using the Vue and Tailwind frameworks for the frontend and Rust for the backend.
 
-To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
+This is a math quiz that randomizes equations to be solved from addition, subtraction, multiplication and division. The player has one minute to solve as many equations as possible. Each good answer will add another two seconds to the time, while a negative answer will take away two seconds. Once the time is up, the player has the option to submit his or her results to the leaderboard.
 
-To learn more before you start working with `icp_bootcamp_project`, see the following documentation available online:
+Application when wrong answer is given:
 
-- [Quick Start](https://internetcomputer.org/docs/current/developer-docs/setup/deploy-locally)
-- [SDK Developer Tools](https://internetcomputer.org/docs/current/developer-docs/setup/install)
-- [Rust Canister Development Guide](https://internetcomputer.org/docs/current/developer-docs/backend/rust/)
-- [ic-cdk](https://docs.rs/ic-cdk)
-- [ic-cdk-macros](https://docs.rs/ic-cdk-macros)
-- [Candid Introduction](https://internetcomputer.org/docs/current/developer-docs/backend/candid/)
-
-If you want to start working on your project right away, you might want to try the following commands:
-
-```bash
-cd icp_bootcamp_project/
-dfx help
-dfx canister --help
-```
+![image](https://github.com/user-attachments/assets/fa0fb741-ca6e-4336-b46f-fa9800488d80)
 
 ## Running the project locally
 
