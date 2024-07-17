@@ -22,7 +22,6 @@ export default {
       flashRed: ref(false),
       flashGreen: ref(false),
       btn_disable: ref(false),
-      send_btn_disable: ref(false),
       leaderboard: [],
     }
   },
@@ -38,7 +37,7 @@ export default {
     start() {
       clearInterval(this.timer); // Clear any existing timer
       clearInterval(this.game_timer); // Clear any existing game timer
-      this.time = 60;//60 normaly , 10 for end screen debug
+      this.time = 60;//60 normaly, 10 for end screen debug
       this.game_time = 0;
       this.question_num = 0;
       this.score = 0;
@@ -63,17 +62,16 @@ export default {
         this.score++;
         this.time += 2;
         this.flashGreen = true;
-        this.btn_disable = true;
 
         if(this.soundON == 1){
         let audio = new Audio("correct.mp3");
-        audio.play();  
+        audio.play();       
+        }
+
         setTimeout(() => {
           this.flashGreen = false;
-          this.btn_disable = false;
-          this.next_question();
-        }, 500);       
-        }
+        }, 300);  
+        this.next_question();
       } else{
         this.flashRed = true;
         this.btn_disable = true;
