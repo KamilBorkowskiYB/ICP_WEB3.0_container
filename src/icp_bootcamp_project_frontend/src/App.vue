@@ -63,7 +63,7 @@ export default {
         this.score++;
         this.time += 2;
         this.flashGreen = true;
-        this.btn_disable = true;
+        this.btn_disable = false;
 
         if(this.soundON == 1){
         let audio = new Audio("correct.mp3");
@@ -162,7 +162,7 @@ export default {
       this.btn_disable = true;
       const target = e.target;
       const name = target.querySelector('#name').value;
-      if(name.length <= 15){
+      if(0 < name.length <= 15){
         await icp_bootcamp_project_backend.add_record(name,this.score.toString());
         this.load_leaderboard();        
       }else{
@@ -196,9 +196,8 @@ export default {
   }
 }
 </script>
-
 <template>
-  <main class="bg-slate-800 h-screen text-white">
+  <main class="bg-slate-800 min-h-screen text-white">
     <div class="bg-slate-800 h-20 flex items-center">   <!-- Top bar -->
       <div class="pl-10">
         <p class="text-4xl text-orange-600">Math Quiz Blitz</p>
@@ -209,7 +208,6 @@ export default {
 
     <div class="bg-slate-600 h-16"></div> <!-- Top span panel -->
 
-
     <div class="grid xl:grid-cols-3 lg:grid-cols-1"> <!-- Main screen -->
       <div class="bg-slate-600 flex justify-center"> <!-- Left side -->
         <div v-if="mask == 1" ><!-- Left side start -->
@@ -217,7 +215,7 @@ export default {
           <br>
           <h1 class="text-center text-4xl">How to play</h1>
           <br>
-          <div class="text-center px-20 pb-20">
+          <div class="text-center px-4 md:px-20 pb-20">
             <p>You will have one minute to answer as many math questions as you can.</p>
             <p class="py-4">Each good answer awards you one score point and bonus two seconds.</p>
             <p>But each wrong answer will cost you two seconds.</p>
@@ -247,7 +245,7 @@ export default {
       <div :class="{'bg-red-500': flashRed, 'bg-green-500': flashGreen, 'bg-slate-700': !flashRed && !flashGreen}" class="h-full drop-shadow-2xl py-10"><!-- Middle -->
         <div v-if="mask == 1" class="h-full flex justify-center items-center" > <!-- Start menu -->
           <div class="flex justify-center">
-            <button @click="start" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-20 text-5xl xl:text 4xl">Start</button>
+            <button @click="start" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-10 md:p-20 text-5xl xl:text-4xl">Start</button>
           </div>
         </div>
         <div v-if="mask == 0" class="h-full">   <!-- Game -->
@@ -265,9 +263,9 @@ export default {
             <div class="text-center text-lg">
                 Enter your answer
             </div>
-            <input id="ans" ref="ans" autocomplete="off" type="text" class="border-2 border-orange-600 p-4 mx-20 text-center text-black"/>
-            <button :disabled="btn_disable" type="submit" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-3 mx-20 xl:mx-15">Answer</button>
-            <button :disabled="btn_disable" @click="restart" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-20 xl:mx-15 ">Restart</button>
+            <input id="ans" ref="ans" autocomplete="off" type="text" class="border-2 border-orange-600 p-4 mx-4 md:mx-20 text-center text-black"/>
+            <button :disabled="btn_disable" type="submit" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-3 mx-4 md:mx-20 xl:mx-15">Answer</button>
+            <button :disabled="btn_disable" @click="restart" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-4 md:mx-20 xl:mx-15 ">Restart</button>
           </form>
         </div>
 
@@ -282,15 +280,15 @@ export default {
             <div class="text-center text-lg">
                 Enter your name (max 15 characters)
             </div>
-            <input id="name" ref="name" autocomplete="off" type="text" class="border-2 border-orange-600 p-4 mx-20 text-center text-black"/>
-            <button :disabled="btn_disable" type="submit" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-20">Send</button>
-            <button @click="start" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-20">Restart</button>
+            <input id="name" ref="name" autocomplete="off" type="text" class="border-2 border-orange-600 p-4 mx-4 md:mx-20 text-center text-black"/>
+            <button :disabled="btn_disable" type="submit" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-4 md:mx-20">Send</button>
+            <button @click="start" class="bg-orange-600 hover:bg-orange-700 rounded text-white p-4 mx-4 md:mx-20">Restart</button>
           </form>
         </div>
       </div>
       
       <div class="bg-slate-600 py-10"><!-- Right side -->
-        <div class="bg-slate-700 rounded p-4 mx-20 h-full">
+        <div class="bg-slate-700 rounded p-4 mx-4 md:mx-20 h-full">
           <div class="rounded-lg grid mx-6 gap-4">   
               <p class="2xl:text-3xl xl:text-2xl text-center text-4xl">LEADERBOARD</p>
               <div class="flex justify-between text-gray-400 2xl:text-2xl text-xl">
