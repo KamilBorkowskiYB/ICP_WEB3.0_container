@@ -38,7 +38,7 @@ export default {
     start() {
       clearInterval(this.timer); // Clear any existing timer
       clearInterval(this.game_timer); // Clear any existing game timer
-      this.time = 60;//60 normaly , 10 for end screen debug
+      this.time = 10;//60 normaly , 10 for end screen debug
       this.game_time = 0;
       this.question_num = 0;
       this.score = 0;
@@ -161,11 +161,13 @@ export default {
       e.preventDefault();
       this.btn_disable = true;
       const target = e.target;
-      const name = target.querySelector('#name').value;
-      if(0 < name.length <= 15){
+      const name = target.querySelector('#name').value.trim(); // Add trim() to remove leading/trailing whitespace
+
+      if(name && name.length <= 15){ // Check if name is not empty
         await icp_bootcamp_project_backend.add_record(name,this.score.toString());
-        this.load_leaderboard();        
-      }else{
+        this.load_leaderboard();
+        this.restart();
+      } else {
         this.btn_disable = false;
       }
     },
@@ -295,7 +297,7 @@ export default {
                 <p>Player name</p>
                 <p>Score</p>
               </div>
-              <div v-for="record in limitedLeaderboard" :key="record[0]" class="flex justify-between 2xl:text-2xl xl:text-xl text-2xl">
+              <div v-for="record in limitedLeaderboard.slice(0, 8)" :key="record[0]" class="flex justify-between 2xl:text-2xl xl:text-xl text-2xl">
                 <p>{{ record[0] }}</p>
                 <p>{{ record[1] }}</p>
               </div>
